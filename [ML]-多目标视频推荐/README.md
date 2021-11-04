@@ -100,7 +100,6 @@ class DeepFM(nn.Module):
         """
         
         """FM 一阶部分"""
-        
         print('self.fm_1st_order_sparse_emb', len(self.fm_1st_order_sparse_emb))
         
         fm_1st_sparse_res = [emb(X_sparse[:, i].unsqueeze(1)).view(-1, 1)  for i, emb in enumerate(self.fm_1st_order_sparse_emb)]
@@ -113,7 +112,7 @@ class DeepFM(nn.Module):
         else:
             fm_1st_part = fm_1st_sparse_res   # [bs, 1]
         
-        """FM 二阶部分"""
+        """FM 二阶部分，计算方法和DeepFM中稍有不同"""
         fm_2nd_order_res = [emb(X_sparse[:, i].unsqueeze(1)) for i, emb in enumerate(self.fm_2nd_order_sparse_emb)]
         fm_2nd_concat_1d = torch.cat(fm_2nd_order_res, dim=1)  # [bs, n, emb_size]  n为类别型特征个数(cate_fea_size)
         
